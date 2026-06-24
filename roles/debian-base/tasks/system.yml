@@ -1,0 +1,23 @@
+---
+- name: Set hostname
+  ansible.builtin.hostname:
+    name: "{{ hostname }}"
+
+- name: Create user directories
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+    owner: "{{ target_user }}"
+    group: "{{ target_user }}"
+    mode: "0755"
+  loop:
+    - "{{ target_home }}/.local/bin"
+    - "{{ target_home }}/repos"
+    - "{{ target_home }}/notes"
+
+- name: Symlink batcat to bat
+  ansible.builtin.file:
+    src: /usr/bin/batcat
+    dest: "{{ target_home }}/.local/bin/bat"
+    state: link
+    owner: "{{ target_user }}"
