@@ -1,0 +1,12 @@
+---
+- import_tasks: system.yml
+  tags: system
+
+- import_tasks: packages.yml
+  tags: packages
+
+- import_tasks: docker.yml
+  tags: docker
+
+- import_tasks: dotfiles.yml
+  tags: dotfiles
