@@ -1,0 +1,11 @@
+packages:
+ - fastfetch
+ - cowsay
+ - fortune
+ - bat
+ - vim
+ - btop
+ - htop
+ - jq
+ - xq
+ - nala
