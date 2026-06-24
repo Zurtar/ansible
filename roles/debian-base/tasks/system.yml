@@ -31,6 +31,20 @@
       PasswordAuthentication yes
   notify: Restart sshd
 
+- name: Set grub timeout to 0
+  ansible.builtin.lineinfile:
+    path: /etc/default/grub
+    regexp: '^GRUB_TIMEOUT='
+    line: 'GRUB_TIMEOUT=0'
+  notify: Update grub
+
+- name: Hide grub menu
+  ansible.builtin.lineinfile:
+    path: /etc/default/grub
+    regexp: '^GRUB_TIMEOUT_STYLE='
+    line: 'GRUB_TIMEOUT_STYLE=hidden'
+  notify: Update grub
+
 - name: Deploy authorized keys
   ansible.posix.authorized_key:
     user: "{{ target_user }}"
