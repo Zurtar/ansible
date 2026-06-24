@@ -2,7 +2,7 @@
 - hosts: localhost
   become: true
   tasks:
-    - name Read package list file
+    - name: Read package list file
       shell: cat ../../meta/install-list/apt
       register: output
 
