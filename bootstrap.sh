@@ -51,4 +51,6 @@ EOF
 chmod 644 "${SSH_DIR}/config"
 chown "${TARGET_USER}:${TARGET_USER}" "${SSH_DIR}/config"
 
+ansible-galaxy collection install ansible.posix community.general
+
 ansible-pull -U "${ANSIBLE_REPO}" "${PLAYBOOK}"
