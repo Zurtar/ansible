@@ -4,27 +4,47 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Architecture
 
-This is an `ansible-pull` repository for configuring a Debian machine. Instead of pushing from a control node, the target machine pulls and runs playbooks against itself (`hosts: localhost`, `become: true`).
+This is an `ansible-pull` repository for configuring a fresh Debian (Forky) machine after a standard netinstall. The target machine pulls and runs playbooks against itself (`hosts: localhost`, `become: true`).
+
+### Provisioning flow
+
+1. Run a standard Debian server netinstall — user, password, SSH already set up by the installer.
+2. Run `bootstrap.sh` (as sudo) — installs `ansible-core` and `git`, writes the GitHub deploy key for the private dotfiles repo, then fires `ansible-pull`.
+3. `ansible-pull` clones this repo and runs the playbook. On completion the machine reboots.
+
+```bash
+sudo bash bootstrap.sh
+```
+
+The `cloud-init` branch preserves an alternative path for Proxmox/cloud-image provisioning.
 
 ### Playbooks
 
-- `debian-base.yml` — Core Debian setup: reads `meta/install-list/apt` and installs all listed packages via `apt`.
-- `debian-base-ai.yml` — AI-focused variant (in progress, currently empty).
+- `debian-base.yml` — Full setup: system config, packages, Docker CE, dotfiles.
+
+### Role structure
+
+`roles/debian-base/tasks/` is split into focused files imported in order:
+
+- `system.yml` — hostname, user directories
+- `packages.yml` — reads `meta/install-list/apt`, installs packages, symlinks `batcat → bat`
+- `docker.yml` — Docker CE via official apt repo (suite pinned to `trixie` for Forky compatibility)
+- `dotfiles.yml` — clones dotfiles repo as `sigil`, symlinks `files/` tree into `$HOME`, installs TPM and fortune files
 
 ### Package list
 
-`meta/install-list/apt` — One package name per line. Read at runtime via `slurp` using `{{ playbook_dir }}` so the path works regardless of what hostname ansible-pull uses for its checkout directory.
+`meta/install-list/apt` — one package per line. Read at runtime via `slurp` using `{{ playbook_dir }}` so the path works regardless of ansible-pull's checkout directory name.
 
 ## Running playbooks
 
-Run manually on the target host:
+Bootstrap (first run on a fresh install):
 ```bash
-ansible-pull -U <repo-url> debian-base.yml
+sudo bash bootstrap.sh
 ```
 
-Or run locally without pull (for testing):
+Re-run manually after bootstrap:
 ```bash
-ansible-playbook debian-base.yml
+ansible-pull -U https://github.com/Zurtar/ansible.git debian-base.yml
 ```
 
 Dry run:
