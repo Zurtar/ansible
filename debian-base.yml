@@ -3,7 +3,7 @@
   become: true
   tasks:
     - name: Read package list file
-      shell: cat meta/install-list/apt
+      shell: cat /root/.ansible/pull/localhost/meta/install-list/apt
       register: output
 
     - name: Install packages
