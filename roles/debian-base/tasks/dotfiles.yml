@@ -38,6 +38,8 @@
     group: "{{ target_user }}"
     mode: "0755"
   loop: "{{ _dotfiles.files }}"
+  loop_control:
+    label: "{{ item.path | relpath(dotfiles_dest + '/files') | dirname }}"
   when: item.path | relpath(dotfiles_dest + '/files') | dirname != ''
 
 - name: Symlink dotfiles into home directory
@@ -48,6 +50,8 @@
     owner: "{{ target_user }}"
     force: true
   loop: "{{ _dotfiles.files }}"
+  loop_control:
+    label: "{{ item.path | relpath(dotfiles_dest + '/files') }}"
 
 - name: Clone TPM (tmux plugin manager)
   ansible.builtin.git:
