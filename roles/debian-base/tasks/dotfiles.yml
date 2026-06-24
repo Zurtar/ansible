@@ -42,6 +42,7 @@
     dest: "{{ target_home }}/{{ item.path | relpath(dotfiles_dest + '/files') }}"
     state: link
     owner: "{{ target_user }}"
+    force: true
   loop: "{{ _dotfiles.files }}"
 
 - name: Clone TPM (tmux plugin manager)
