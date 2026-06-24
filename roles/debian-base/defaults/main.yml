@@ -3,5 +3,4 @@ target_user: sigil
 target_home: /home/sigil
 dotfiles_repo: git@github.com:Zurtar/dotfiles.git
 dotfiles_dest: "{{ target_home }}/repos/dotfiles"
-hostname: debian-host  # fill in before running
 _docker_arch: "{{ {'x86_64': 'amd64', 'aarch64': 'arm64'}.get(ansible_facts['architecture'], ansible_facts['architecture']) }}"

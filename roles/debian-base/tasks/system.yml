@@ -1,8 +1,4 @@
 ---
-- name: Set hostname
-  ansible.builtin.hostname:
-    name: "{{ hostname }}"
-
 - name: Create user directories
   ansible.builtin.file:
     path: "{{ item }}"
