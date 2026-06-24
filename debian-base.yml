@@ -6,4 +6,6 @@
     - debian-base
   post_tasks:
     - name: Reboot
-      ansible.builtin.reboot:
+      ansible.builtin.command: shutdown -r +1
+      async: 1
+      poll: 0

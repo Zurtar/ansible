@@ -7,6 +7,18 @@
     group: root
     mode: "0644"
 
+- name: Find legacy .list files in sources.list.d
+  ansible.builtin.find:
+    paths: /etc/apt/sources.list.d
+    patterns: "*.list"
+  register: _legacy_sources
+
+- name: Remove legacy .list files
+  ansible.builtin.file:
+    path: "{{ item.path }}"
+    state: absent
+  loop: "{{ _legacy_sources.files }}"
+
 - name: Configure Debian forky main sources
   ansible.builtin.deb822_repository:
     name: debian
