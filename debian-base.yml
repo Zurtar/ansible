@@ -4,3 +4,6 @@
   become: true
   roles:
     - debian-base
+  post_tasks:
+    - name: Reboot
+      ansible.builtin.reboot:
