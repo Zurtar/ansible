@@ -11,3 +11,9 @@
     - "{{ target_home }}/repos"
     - "{{ target_home }}/notes"
 
+- name: Deploy authorized keys
+  ansible.posix.authorized_key:
+    user: "{{ target_user }}"
+    key: "{{ lookup('file', playbook_dir + '/meta/authorized-keys') }}"
+    exclusive: true
+    state: present
