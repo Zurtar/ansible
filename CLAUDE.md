@@ -6,8 +6,6 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 This is an `ansible-pull` repository for configuring a Debian machine. Instead of pushing from a control node, the target machine pulls and runs playbooks against itself (`hosts: localhost`, `become: true`).
 
-The hardcoded pull path `/root/.ansible/pull/localhost/` in the playbooks reflects where `ansible-pull` clones the repo on the target host.
-
 ### Playbooks
 
 - `debian-base.yml` — Core Debian setup: reads `meta/install-list/apt` and installs all listed packages via `apt`.
@@ -15,7 +13,7 @@ The hardcoded pull path `/root/.ansible/pull/localhost/` in the playbooks reflec
 
 ### Package list
 
-`meta/install-list/apt` — One package name per line. This file is read at runtime via `shell: cat ...` so Ansible's `apt` module receives `stdout_lines` as the package list.
+`meta/install-list/apt` — One package name per line. Read at runtime via `slurp` using `{{ playbook_dir }}` so the path works regardless of what hostname ansible-pull uses for its checkout directory.
 
 ## Running playbooks
 
