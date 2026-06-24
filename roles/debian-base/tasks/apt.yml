@@ -1,0 +1,33 @@
+---
+- name: Remove legacy sources.list
+  ansible.builtin.copy:
+    content: "# Managed by ansible - see /etc/apt/sources.list.d/\n"
+    dest: /etc/apt/sources.list
+    owner: root
+    group: root
+    mode: "0644"
+
+- name: Configure Debian forky main sources
+  ansible.builtin.deb822_repository:
+    name: debian
+    types: [deb, deb-src]
+    uris: http://deb.debian.org/debian/
+    suites: [forky, forky-updates]
+    components: [main, non-free-firmware, non-free, contrib]
+    signed_by: /usr/share/keyrings/debian-archive-keyring.gpg
+    state: present
+
+- name: Configure Debian forky security sources
+  ansible.builtin.deb822_repository:
+    name: debian-security
+    types: [deb, deb-src]
+    uris: http://security.debian.org/debian-security/
+    suites: [forky-security]
+    components: [main, non-free-firmware, non-free, contrib]
+    signed_by: /usr/share/keyrings/debian-archive-keyring.gpg
+    state: present
+
+- name: Update apt cache and upgrade
+  ansible.builtin.apt:
+    update_cache: true
+    upgrade: full

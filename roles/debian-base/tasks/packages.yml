@@ -13,7 +13,6 @@
         | list
       }}
     state: present
-    update_cache: true
 
 - name: Symlink batcat to bat
   ansible.builtin.file:
