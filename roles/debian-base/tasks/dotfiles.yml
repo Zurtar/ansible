@@ -15,6 +15,8 @@
     update: true
   become: true
   become_user: "{{ target_user }}"
+  environment:
+    GIT_SSH_COMMAND: "ssh -i {{ target_home }}/.ssh/id_ed25519_github -o StrictHostKeyChecking=accept-new"
 
 - name: Find all files in dotfiles files/ tree
   ansible.builtin.find:
