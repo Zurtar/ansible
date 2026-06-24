@@ -11,6 +11,18 @@
     - "{{ target_home }}/repos"
     - "{{ target_home }}/notes"
 
+- name: Harden sshd config
+  ansible.builtin.copy:
+    dest: /etc/ssh/sshd_config.d/hardening.conf
+    owner: root
+    group: root
+    mode: "0644"
+    content: |
+      PermitRootLogin no
+      X11Forwarding no
+      PasswordAuthentication yes
+  notify: Restart sshd
+
 - name: Deploy authorized keys
   ansible.posix.authorized_key:
     user: "{{ target_user }}"
