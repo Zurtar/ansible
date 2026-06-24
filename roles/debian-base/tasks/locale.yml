@@ -1,0 +1,43 @@
+---
+- name: Set timezone
+  community.general.timezone:
+    name: America/Toronto
+
+- name: Generate en_CA.UTF-8 locale
+  community.general.locale_gen:
+    name: en_CA.UTF-8
+    state: present
+
+- name: Set default locale
+  ansible.builtin.copy:
+    content: |
+      LANG="en_CA.UTF-8"
+      LANGUAGE="en_CA:en"
+    dest: /etc/default/locale
+    owner: root
+    group: root
+    mode: "0644"
+
+- name: Install localepurge
+  ansible.builtin.apt:
+    name: localepurge
+    state: present
+
+- name: Configure localepurge
+  ansible.builtin.copy:
+    dest: /etc/locale.nopurge
+    owner: root
+    group: root
+    mode: "0644"
+    content: |
+      USE_DPKG
+      MANDELETE
+      DONTBOTHERNEWLOCALE
+      SHOWFREEDSPACE
+      en
+      en_CA
+      en_CA.UTF-8
+
+- name: Run localepurge
+  ansible.builtin.command: localepurge
+  changed_when: false

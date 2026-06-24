@@ -2,6 +2,9 @@
 - import_tasks: apt.yml
   tags: apt
 
+- import_tasks: locale.yml
+  tags: locale
+
 - import_tasks: system.yml
   tags: system
 
