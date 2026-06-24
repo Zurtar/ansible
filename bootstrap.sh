@@ -24,7 +24,7 @@ apt-get install -y ansible-core git sudo
 
 # Ensure user is in sudo group
 if ! id -nG "$TARGET_USER" | grep -qw sudo; then
-    usermod -aG sudo "$TARGET_USER"
+    /usr/sbin/usermod -aG sudo "$TARGET_USER"
     echo "Added $TARGET_USER to sudo group"
 fi
 
