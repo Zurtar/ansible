@@ -3,3 +3,4 @@ target_user: sigil
 target_home: /home/sigil
 dotfiles_repo: git@github.com:Zurtar/dotfiles.git
 dotfiles_dest: "{{ target_home }}/repos/dotfiles"
+reboot: true

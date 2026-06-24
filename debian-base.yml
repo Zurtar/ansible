@@ -9,7 +9,12 @@
       ansible.builtin.apt:
         upgrade: full
 
+    - name: Minimize manually installed packages
+      ansible.builtin.command: apt-mark minimize-manual
+      changed_when: false
+
     - name: Reboot
       ansible.builtin.command: shutdown -r +1
       async: 1
       poll: 0
+      when: reboot | bool
