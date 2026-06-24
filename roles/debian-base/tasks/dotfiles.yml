@@ -7,15 +7,6 @@
     group: "{{ target_user }}"
     mode: "0700"
 
-- name: Fix dotfiles repo ownership if cloned as wrong user
-  ansible.builtin.file:
-    path: "{{ dotfiles_dest }}"
-    state: directory
-    owner: "{{ target_user }}"
-    group: "{{ target_user }}"
-    recurse: true
-  when: dotfiles_dest is directory
-
 - name: Clone dotfiles repo
   ansible.builtin.git:
     repo: "{{ dotfiles_repo }}"
