@@ -16,3 +16,6 @@
 
 - import_tasks: dotfiles.yml
   tags: dotfiles
+
+- import_tasks: cleanup.yml
+  tags: cleanup

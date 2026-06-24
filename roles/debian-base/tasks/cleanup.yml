@@ -1,0 +1,12 @@
+---
+- name: Remove unwanted packages
+  ansible.builtin.apt:
+    name: >-
+      {{
+        lookup('file', playbook_dir + '/meta/remove-list/apt').splitlines()
+        | reject('match', '^\\s*(#.*)?$')
+        | list
+      }}
+    state: absent
+    purge: true
+    autoremove: true
