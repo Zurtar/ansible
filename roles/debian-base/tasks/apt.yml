@@ -39,7 +39,6 @@
     signed_by: /usr/share/keyrings/debian-archive-keyring.gpg
     state: present
 
-- name: Update apt cache and upgrade
+- name: Update apt cache
   ansible.builtin.apt:
     update_cache: true
-    upgrade: full

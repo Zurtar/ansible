@@ -1,14 +1,9 @@
 ---
-- name: Read package list
-  ansible.builtin.slurp:
-    src: "{{ playbook_dir }}/meta/install-list/apt"
-  register: _apt_list_raw
-
 - name: Install packages
   ansible.builtin.apt:
     name: >-
       {{
-        (_apt_list_raw.content | b64decode).splitlines()
+        lookup('file', playbook_dir + '/meta/install-list/apt').splitlines()
         | reject('match', '^\\s*(#.*)?$')
         | list
       }}

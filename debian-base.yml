@@ -5,6 +5,10 @@
   roles:
     - debian-base
   post_tasks:
+    - name: Upgrade all packages
+      ansible.builtin.apt:
+        upgrade: full
+
     - name: Reboot
       ansible.builtin.command: shutdown -r +1
       async: 1
